@@ -1,0 +1,173 @@
+package assignment_1;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+//Creating Library Class
+public class Library {
+    private ArrayList<Book> books;
+    private ArrayList<User> users;
+
+    // Creating Library Class Constructor
+    Library() {
+        books = new ArrayList<>();
+        users = new ArrayList<>();
+    }
+
+    // Creating Methods to add books and users
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    // Creating Method to check out a book to a user
+    public boolean checkoutBook(int userID, int bookID) {
+        User user = getUserByID(userID);
+        if (user == null) {
+            return false; // User not found
+        }
+        Book book = getBookByID(bookID);
+        if (book == null || !(book).getAvailable()) {
+            return false; // Book not found or already checked out
+        }
+        user.addBorrowedBook(book);
+        book.setAvailable(false);
+        return true;
+    }
+
+    // Creating Method to search for books by title or author
+    // The variable nora corresponds to the string parameter that provide method with title or author 
+    public ArrayList<Book> searchBooks(String tora) {
+        ArrayList<Book> results = new ArrayList<>();
+        for (Book book : books) {
+            // Using toLowerCase for both the argument and book title before compairing using contain function 
+            if (book.getTitle().toLowerCase().contains(tora.toLowerCase()) ||
+                    book.getAuthor().toLowerCase().contains(tora.toLowerCase())) {
+                results.add(book);
+            }
+        }
+        return results;
+    }
+
+    // Creating method to get user by ID
+     private User getUserByID(int userID) {
+        for (User user : users) {
+            if (user.getUserid() == userID) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    // Creating method to get book by ID
+    private Book getBookByID(int bookID) {
+        for (Book book : books) {
+            if (book.getBookID() == bookID) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    // Creating Method to return a book
+    public boolean returnBook(int userID, int bookID) {
+        User user = getUserByID(userID);
+        if (user == null) {
+            return false; // User not found
+        }
+        Book book = getBookByID(bookID);
+        if (book == null || !user.getBorrowedBooks().contains(book)) {
+            return false; // Book not found or not borrowed by another user
+        }
+        user.returnBook(book);
+        // Calling return book method to remove from borrowed books
+        book.setAvailable(true);
+        // Setting availabitity to true as we have removed the book from borrowedbooks
+        return true;
+    }
+
+
+    // Creating Method to display all books
+    public void displayBooks() {
+        System.out.println("Books in the library:");
+        for (Book book : books) {
+            System.out.println(book.getBookID() + ": " + book.getTitle() + " by " + book.getAuthor() +
+                    " - Genre: " + book.getGenre() + ", Available: " + (book.getAvailable() ? "Yes" : "No"));
+        }
+    }
+
+     // Creating Method to add a book to the library
+    public void addBook(Library library, Scanner scanner) {
+        System.out.print("Enter Book ID: ");
+        int bookID = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter Title: ");
+        String title = scanner.nextLine();
+        System.out.print("Enter Author: ");
+        String author = scanner.nextLine();
+        System.out.print("Enter Genre: ");
+        String genre = scanner.nextLine();
+        Book book = new Book(bookID, title, author, genre, true);
+        library.addBook(book);
+        System.out.println("Book added successfully!");
+    }
+
+    // Creating Method to add a user to the library
+    public void addUser(Library library, Scanner scanner) {
+        System.out.print("Enter User ID: ");
+        int userID = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Contact Information: ");
+        String contactInfo = scanner.nextLine();
+        User user = new User(userID, name, contactInfo);
+        library.addUser(user);
+        System.out.println("User added successfully!");
+    }
+
+    //Creating Method to borrow a book
+    public void borrowBook(Library library, Scanner scanner) {
+        System.out.print("Enter User ID: ");
+        int userID = scanner.nextInt();
+        System.out.print("Enter Book ID: ");
+        int bookID = scanner.nextInt();
+        if (library.checkoutBook(userID, bookID)) {
+            System.out.println("Book has been checked out successfully!");
+        } else {
+            System.out.println("Failed to check out book. Please check User ID and Book ID.");
+        }
+    }
+
+    // Creating Method to return a book
+    public void returnBook(Library library, Scanner scanner) {
+        System.out.print("Enter User ID: ");
+        int userID = scanner.nextInt();
+        System.out.print("Enter Book ID: ");
+        int bookID = scanner.nextInt();
+        if (library.returnBook(userID, bookID)) {
+            System.out.println("Book is returned successfully!");
+        } else {
+            System.out.println("Failed to return book. Please check User ID and Book ID.");
+        }
+    }
+
+    // Creating Method to search for books by title or author
+    public void searchBooks(Library library, Scanner scanner) {
+        System.out.print("Enter title or author to search: ");
+        String input = scanner.next();
+        ArrayList<Book> results = library.searchBooks(input);
+        if (results.isEmpty()) {
+            System.out.println("No books found matching the search.");
+        } else {
+            System.out.println("Search Results:");
+            for (Book book : results) {
+                System.out.println(book.getTitle() + " by " + book.getAuthor());
+            }
+        }
+    }
+}
+
