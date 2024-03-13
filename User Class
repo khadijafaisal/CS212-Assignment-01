@@ -1,0 +1,65 @@
+package assignment_1;
+
+import java.util.ArrayList;
+
+// Creating a user class
+public class User {
+    private int userid;
+    private String name;
+    private String contactInfo;
+    private ArrayList<Book> borrowedBooks = new ArrayList<Book>();
+
+    // Creating a User class constructor
+    User(int userid, String name, String contactInfo) {
+        this.userid = userid;
+        this.name = name;
+        this.contactInfo = contactInfo;
+        borrowedBooks = new ArrayList<>();
+    }
+
+    //Creating Getters and Setters for the defined private attributes
+    public int getUserid() {
+        return userid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    //We have added error handling that checks that the user id is never negative 
+    public void setUserID(int userID) {
+        // Checking if userID is negative
+        if (userID < 0) {
+            throw new IllegalArgumentException("User ID cannot be negative.");
+        }
+        this.userid = userID;
+    }
+
+
+    public void setContactInfo(String contactInfo) {
+        // Error handling to  Check if contactInfo is exactly 11 digits as a phone numner is 11 digits
+        if (contactInfo.length() != 11 ) {
+            //Throwing the the message that contact info must be 11 digits
+            throw new IllegalArgumentException("Contact information must be exactly 11 digits.");
+        }
+        this.contactInfo = contactInfo;
+    }
+
+    public ArrayList<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    //Creating a method to add the Borrowed book in the ArrayList
+    public void addBorrowedBook(Book book ) {
+        borrowedBooks.add(book);
+    }
+
+    //Creating a method to remove the book retured from borrowed books
+    public void returnBook(Book book) {
+        borrowedBooks.remove(book);
+    }
+}
