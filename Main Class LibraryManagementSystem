@@ -1,0 +1,62 @@
+package assignment_1;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class LibraryManagementSystem{
+    public static void main(String[] args) {
+        Library library = new Library();
+        Scanner input = new Scanner(System.in);
+        int choice;
+        do {
+            // Adding Try Catch so that the program does not crash if we give an invalid number 
+            try {
+                System.out.println("\nWelcome to the Library Management System:");
+                System.out.println("\nLibrary Management System Menu:");
+                System.out.println("1. Add Book");
+                System.out.println("2. Add User");
+                System.out.println("3. Display Books");
+                System.out.println("4. Borrow Book");
+                System.out.println("5. Return Book");
+                System.out.println("6. Search Books by Title or Author");
+                System.out.println("7. Exit");
+                System.out.print("Enter your choice: ");
+                choice = input.nextInt();
+                switch (choice) {
+                    case 1:
+                        library.addBook(library, input);
+                        break;
+                    case 2:
+                        library.addUser(library, input);
+                        break;
+                    case 3:
+                        library.displayBooks();
+                        break;
+                    case 4:
+                        library.borrowBook(library, input);
+                        break;
+                    case 5:
+                        library.returnBook(library, input);
+                        break;
+                    case 6:
+                        library.searchBooks(library, input);
+                        break;
+                    case 7:
+                        System.out.println("You Have Exited The Library");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 1 and 7.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                input.nextLine(); // Consume the invalid input
+                choice = 0; // Reset choice to allow the loop to continue
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage()); // Print error message
+                choice = 0; // Reset choice to allow the loop to continue
+            }
+        } while (choice != 7);
+        input.close();
+    }
+
+}
