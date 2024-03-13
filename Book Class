@@ -1,0 +1,69 @@
+package assignment_1;
+
+// Creating Book Class
+class Book {
+  private int bookID;
+  private String title;
+  private String author;
+  private String genre;
+  private boolean available;
+
+  // Creating Book Class Constructor
+  public Book(int bookID, String title, String author, String genre, boolean available) {
+      this.bookID = bookID;
+      this.title = title;
+      this.author = author;
+      this.genre = genre;
+      this.available = available;
+  }
+
+  // Getters
+  public int getBookID() {
+      return bookID;
+  }
+
+  public String getTitle() {
+      return title;
+  }
+
+  public String getAuthor() {
+      return author;
+  }
+
+  public String getGenre() {
+      return genre;
+  }
+
+  public boolean getAvailable() {
+      return available;
+  }
+
+  // Setters
+
+  // Using error handling to make sure bookid is not negative
+  public void setBookID(int bookID) {
+    // Check if bookID is negative
+    if (bookID < 0) {
+        throw new IllegalArgumentException("Book ID cannot be negative.");
+    }
+    this.bookID = bookID;
+}
+  
+  public void setTitle(String title) {
+      this.title = title;
+  }
+
+  public void setAuthor(String author) {
+      this.author = author;
+  }
+
+  public void setGenre(String genre) {
+      this.genre = genre;
+  }
+
+  // Setting the availability of the book using boolean datatype
+  public void setAvailable(boolean available) {
+      this.available = available;
+  }
+
+}
