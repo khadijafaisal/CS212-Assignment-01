@@ -16,27 +16,38 @@ public class Library {
 
     // Creating Methods to add books and users
     public void addBook(Book book) {
-        books.add(book);
+                // Check if bookID is valid
+                if (book.getBookID() <= 0) {
+                    throw new IllegalArgumentException("Invalid book ID. Please enter a positive integer.");
+                }
+                // Check if book title is empty
+                if (book.getTitle().trim().isEmpty()) {
+                    throw new IllegalArgumentException("Book title cannot be empty.");
+                }
+                // Check if book author is empty
+                if (book.getAuthor().trim().isEmpty()) {
+                    throw new IllegalArgumentException("Book author cannot be empty.");
+                }
+                books.add(book);
+        
     }
 
     public void addUser(User user) {
+        // Check if userID is valid
+        if (user.getUserid() <= 0) {
+            throw new IllegalArgumentException("Invalid user ID. Please enter a positive integer.");
+        }
+        // Check if user name is empty
+        if (user.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("User name cannot be empty.");
+        }
+        // Check if contactInfo is exactly 11 digits
+        if (user.getContactInfo().trim().length() != 11) {
+            throw new IllegalArgumentException("Contact information must be exactly 11 digits.");
+        }
         users.add(user);
     }
 
-    // Creating Method to check out a book to a user
-    public boolean checkoutBook(int userID, int bookID) {
-        User user = getUserByID(userID);
-        if (user == null) {
-            return false; // User not found
-        }
-        Book book = getBookByID(bookID);
-        if (book == null || !(book).getAvailable()) {
-            return false; // Book not found or already checked out
-        }
-        user.addBorrowedBook(book);
-        book.setAvailable(false);
-        return true;
-    }
 
     // Creating Method to search for books by title or author
     // The variable nora corresponds to the string parameter that provide method with title or author 
@@ -168,6 +179,24 @@ public class Library {
                 System.out.println(book.getTitle() + " by " + book.getAuthor());
             }
         }
+    }
+
+    public boolean checkoutBook(int userID, int bookID) {
+        // Check if user ID or book ID is negative
+        if (userID < 0 || bookID < 0) {
+            throw new IllegalArgumentException("User ID and book ID cannot be negative.");
+        }
+        User user = getUserByID(userID);
+        if (user == null) {
+            return false; // User not found
+        }
+        Book book = getBookByID(bookID);
+        if (book == null || !(book).getAvailable()) {
+            return false; // Book not found or already checked out
+        }
+        user.addBorrowedBook(book);
+        book.setAvailable(false);
+        return true;
     }
 }
 
