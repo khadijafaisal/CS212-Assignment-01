@@ -22,6 +22,10 @@ public class LibraryManagementSystem{
                 System.out.println("7. Exit");
                 System.out.print("Enter your choice: ");
                 choice = input.nextInt();
+                if (choice <= 0) {
+                    throw new IllegalArgumentException("Invalid input. Please enter a positive integer.");
+                }
+
                 switch (choice) {
                     case 1:
                         library.addBook(library, input);
@@ -53,10 +57,10 @@ public class LibraryManagementSystem{
                 choice = 0; // Reset choice to allow the loop to continue
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage()); // Print error message
+                input.nextLine(); // Consume the newline character
                 choice = 0; // Reset choice to allow the loop to continue
             }
         } while (choice != 7);
         input.close();
     }
-
 }
