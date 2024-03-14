@@ -32,7 +32,7 @@ public class User {
 
     //We have added error handling that checks that the user id is never negative 
     public void setUserID(int userID) {
-        // Checking if userID is negative
+        // Check if userID is negative
         if (userID < 0) {
             throw new IllegalArgumentException("User ID cannot be negative.");
         }
